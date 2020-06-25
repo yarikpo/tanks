@@ -1,0 +1,15 @@
+{
+  "name": "tank",
+  "version": "1.0.0",
+  "description": "tank written with clear canvas",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "canvas",
+    "js"
+  ],
+  "author": "Popovych Yaroslav <yaroslavpopovich04@gmail.com>",
+  "license": "ISC"
+}
