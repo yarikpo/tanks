@@ -24,7 +24,7 @@ const field = [
     [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
     [4, 0, 0, 0, 'T1', 'T2', 0, 0, 0, 0, 0, 0, 4],
     [4, 0, 0, 0, 'T3', 'T4', 0, 0, 0, 0, 0, 0, 4],
-    [4, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+    [4, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 4],
     [4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
 ];
@@ -126,6 +126,7 @@ imgShovel.src = 'D:/Projects/canvas/tank/images/bonus_shovel.png';
 var isDefeatedPlayerStab = false;
 
 var enemyTanks = [];
+var enemyTanksBullet = [];
 
 /*
 update() {
@@ -159,6 +160,75 @@ checkForCollision() {
     }
 }
 */
+
+function canMoveEnemyBullet(pos) {
+    let bullet = enemyTanksBullet[pos];
+    for (let i = 0; i < blocks.length; i++) {
+        let block = blocks[i];
+        if (block.state != 1 && block.state != 4 && block.state != 5 && block.state != 6) {
+            continue;
+        }
+
+        if (bullet.x >= block.x && bullet.x <= block.x + 50 && bullet.y >= block.y && bullet.y <= block.y + 50) {
+            bullet.speed = 0;
+            bullet.appear = false;
+            bullet.x = 1000;
+            enemyTanks[pos].shooted = false;
+            if (block.state == 1) {
+                blocks[i].state = 0;
+            }
+            if (block.state == 6) {
+                blocks[i].state = -1;
+            }
+            if (block.state == 5) {
+                isDefeatedPlayerStab = true;
+            }
+            enemyTanksBullet[pos] = bullet;
+        }
+    }
+    if (bullet.x >= playerTank.x && bullet.x <= playerTank.x + 50 && bullet.y >= playerTank.y && bullet.y <= playerTank.y + 50) {
+        bullet.speed = 0;
+        bullet.appear = false;
+        bullet.x = 1000;
+        enemyTanks[pos].shooted = false;
+        
+        playerTank.lives--;
+        if (playerTank.lives < 1) {
+            alert('0 lives');
+        }
+
+        enemyTanksBullet[pos] = bullet;
+    }
+}
+
+function drawEnemyBullets() {
+    for (let i = 0; i < enemyTanksBullet.length; i++) {
+        let bullet = enemyTanksBullet[i];
+        if (bullet.appear == false) {
+            continue;
+        }
+
+        ctx.beginPath();
+        ctx.arc(bullet.x, bullet.y, playerBullet.bulletRadius, 0, Math.PI * 2);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+        ctx.closePath();
+    }
+}
+
+function shootEnemyTank(i) {
+    let tank = enemyTanks[i];
+    let bullet = enemyTanksBullet[i];
+    if (bullet.appear == true) {
+        // return;
+    }
+    bullet.appear = true;
+    bullet.speed = tank.shootSpeed;
+    bullet.state = tank.state;
+    bullet.x = tank.x + 25;
+    bullet.y = tank.y + 25;
+    enemyTanksBullet[i] = bullet;
+}
 
 function drawEnemyTanks() {
     for (let i = 0; i < enemyTanks.length; i++) {
@@ -216,6 +286,7 @@ function drawEnemyTanks() {
 
 function createEnemyTank(x, y, type) {
     let tank = { x: x, y: y, type: type, state: 3, sx: x, sy: y, timer: 0 };
+    let tankBullet = { x: 0, y: 0, state: 3, speed: 0, appear: false };
     tank.shooted = false;
     if (type == 1) {
         tank.speed = 10;
@@ -237,6 +308,7 @@ function createEnemyTank(x, y, type) {
         tank.shootSpeed = 25;
         tank.lives = 2;
     }
+    enemyTanksBullet.push(tankBullet);
     enemyTanks.push(tank);
 }
 
@@ -246,7 +318,7 @@ function canMoveBullet() {
         if (block.state != 1 && block.state != 4 && block.state != 5 && block.state != 6) {
             continue;
         }
-        if (playerBullet.x > block.x && playerBullet.x < block.x + 50 && playerBullet.y > block.y && playerBullet.y < block.y + 50) {
+        if (playerBullet.x >= block.x && playerBullet.x <= block.x + 50 && playerBullet.y >= block.y && playerBullet.y <= block.y + 50) {
             playerBullet.speed = 0;
             playerBullet.appear = false;
             playerBullet.x = 1000;
@@ -267,7 +339,7 @@ function canMoveBullet() {
         if (block.state == 0) {
             continue;
         }
-        if (playerBullet.x > block.x && playerBullet.x < block.x + 50 && playerBullet.y > block.y && playerBullet.y < block.y + 50) {
+        if (playerBullet.x >= block.x && playerBullet.x <= block.x + 50 && playerBullet.y >= block.y && playerBullet.y <= block.y + 50) {
             playerBullet.speed = 0;
             playerBullet.appear = false;
             playerBullet.x = 1000;
@@ -323,6 +395,9 @@ function canMove() {
         if (playerTank.state == 1) {            
             if (playerTank.y - playerTank.speed < block.y + cubeSize && playerTank.y - playerTank.speed > block.y && ((playerTank.x >= block.x && playerTank.x <= block.x + cubeSize) || (playerTank.x + cubeSize >= block.x && playerTank.x + cubeSize <= block.x + cubeSize))) {
                 console.log(block);
+
+                playerTank.y = block.y + 50;
+
                 if (block.state == 7) {
                     playerTank.type++;
                     if (playerTank.type == 4) {
@@ -335,6 +410,7 @@ function canMove() {
                     blocks[i].state = 0;
                 }
                 if  (block.state == 9) {
+                    console.log('bonus 9');
                     for (let j = 0; j < blocks.length; j++) {
                         if (blocks[j].state == -1) {
                             blocks[j].state = 6;
@@ -348,6 +424,9 @@ function canMove() {
         if (playerTank.state == 3) {
             if (playerTank.y + playerTank.speed + cubeSize > block.y && playerTank.y + playerTank.speed + cubeSize < block.y + cubeSize && ((playerTank.x >= block.x && playerTank.x <= block.x + cubeSize) || (playerTank.x + cubeSize >= block.x && playerTank.x + cubeSize <= block.x + cubeSize))) {
                 console.log(block);
+
+                playerTank.y = block.y - 50;
+
                 if (block.state == 7) {
                     playerTank.type++;
                     if (playerTank.type == 4) {
@@ -360,9 +439,10 @@ function canMove() {
                     blocks[i].state = 0;
                 }
                 if  (block.state == 9) {
+                    console.log('bonus 9');
                     for (let j = 0; j < blocks.length; j++) {
-                        if (blocks[i].state == -1) {
-                            blocks[i].state = 6;
+                        if (blocks[j].state == -1) {
+                            blocks[j].state = 6;
                         }
                     }
                     blocks[i].state = 0;
@@ -373,6 +453,9 @@ function canMove() {
         if (playerTank.state == 2) {
             if (playerTank.x + cubeSize + playerTank.speed > block.x && playerTank.x + cubeSize + playerTank.speed < block.x + cubeSize && ((playerTank.y >= block.y && playerTank.y <= block.y + cubeSize) || (playerTank.y + cubeSize >= block.y && playerTank.y + cubeSize <= block.y + cubeSize))) {
                 console.log(block);
+
+                playerTank.x = block.x - 50;
+
                 if (block.state == 7) {
                     playerTank.type++;
                     if (playerTank.type == 4) {
@@ -385,9 +468,10 @@ function canMove() {
                     blocks[i].state = 0;
                 }
                 if  (block.state == 9) {
+                    console.log('bonus 9');
                     for (let j = 0; j < blocks.length; j++) {
-                        if (blocks[i].state == -1) {
-                            blocks[i].state = 6;
+                        if (blocks[j].state == -1) {
+                            blocks[j].state = 6;
                         }
                     }
                     blocks[i].state = 0;
@@ -398,6 +482,9 @@ function canMove() {
         if (playerTank.state == 4) {
             if (playerTank.x - playerTank.speed < block.x + cubeSize && playerTank.x - playerTank.speed > block.x && ((playerTank.y >= block.y && playerTank.y <= block.y + cubeSize) || (playerTank.y + cubeSize >= block.y && playerTank.y + cubeSize <= block.y + cubeSize))) {
                 console.log(block);
+
+                playerTank.x = block.x + 50;
+
                 if (block.state == 7) {
                     playerTank.type++;
                     if (playerTank.type == 4) {
@@ -410,9 +497,10 @@ function canMove() {
                     blocks[i].state = 0;
                 }
                 if  (block.state == 9) {
+                    console.log('bonus 9');
                     for (let j = 0; j < blocks.length; j++) {
-                        if (blocks[i].state == -1) {
-                            blocks[i].state = 6;
+                        if (blocks[j].state == -1) {
+                            blocks[j].state = 6;
                         }
                     }
                     blocks[i].state = 0;
@@ -590,12 +678,26 @@ function draw() {
     } else if (playerBullet.state == 4) {
         playerBullet.x-= playerBullet.speed;
     }
+    // enemies' bullet's movements
+    for (let i = 0; i < enemyTanksBullet.length; i++) {
+        canMoveEnemyBullet(i);
+        if (enemyTanksBullet[i].state == 1) {
+            enemyTanksBullet[i].y-= enemyTanksBullet[i].speed;
+        } else if (enemyTanksBullet[i].state == 2) {
+            enemyTanksBullet[i].x+= enemyTanksBullet[i].speed;
+        } else if (enemyTanksBullet[i].state == 3) {
+            enemyTanksBullet[i].y+= enemyTanksBullet[i].speed;
+        } else if (enemyTanksBullet[i].state == 4) {
+            enemyTanksBullet[i].x-= enemyTanksBullet[i].speed;
+        }
+    }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawTank();
     drawEnemyTanks();
     drawBlocks();
     drawPlayerBullet();
+    drawEnemyBullets();
 }
 
 createField();
