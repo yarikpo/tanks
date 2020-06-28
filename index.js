@@ -19,8 +19,8 @@ const field = [
     [4, 0, '#', 0, 8, 0, 0, 0, 0, 0, 0, 0, 4],
     [4, 0, 0, 0, 9, 1, 0, 1, 1, 1, 0, 0, 4],
     [4, 0, 7, 0, 0, 1, 0, 0, 0, 0, 0, 0, 4],
-    [4, 0, 7, 0, 0, 1, 0, 0, 0, 0, 0, 0, 4],
-    [4, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+    [4, 0, 7, 0, 0, 1, 4, 4, 0, 0, 0, 0, 4],
+    [4, 0, 7, 0, 0, 0, 4, 4, 0, 0, 0, 0, 4],
     [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
     [4, 0, 0, 0, 'T1', 'T2', 0, 0, 0, 0, 0, 0, 4],
     [4, 0, 0, 0, 'T3', 'T4', 0, 0, 0, 0, 0, 0, 4],
@@ -128,38 +128,177 @@ var isDefeatedPlayerStab = false;
 var enemyTanks = [];
 var enemyTanksBullet = [];
 
-/*
-update() {
-    handleKeypresses()
-    handlePhysics()
-    draw()
-}
+var base = { x: 0, y: 0 };
 
-handePhysics() {
-    if (rightPressed == true) {
-        checkForCollsision()
-    } else if (leftPressed == true) {
-        playerTank.state = 4;
-        playerTank.x-= playerTank.speed;
-    } else if (upPressed == true && canMove() == true) {
-        playerTank.state = 1;
-        playerTank.y-= playerTank.speed;
-    } else if (downPressed == true) {
-        playerTank.state = 3;
-        playerTank.y+= playerTank.speed;
-    }
-}
+function canEnemyMove(tank) {
+    for (let i = 0; i < blocks.length; i++) {
+        let block = blocks[i];
+        
+        if (block.state != 1 && block.state != 4 && block.state != 5 && block.state != 6 && block.state != 7 && block.state != 8 && block.state != 9) {
+            continue;
+        }
+        
+        if (tank.state == 1) {            
+            if (tank.y - tank.speed < block.y + cubeSize && tank.y - tank.speed > block.y && ((tank.x >= block.x && tank.x <= block.x + cubeSize) || (tank.x + cubeSize >= block.x && tank.x + cubeSize <= block.x + cubeSize))) {
+                // console.log(block);
 
-checkForCollision() {
-    switch player.dir {
-        UP: {
-            if levelState[player.x][player.y-1].notIsASolid {
-                player.y -= 1;
+                tank.y = block.y + 50;
+
+                if (block.state == 7) {
+                    tank.type++;
+                    if (tank.type == 4) {
+                        tank.lives = Math.max(2, tank.lives);
+                    }
+                    blocks[i].state = 0;
+                }
+                if (block.state == 8) {
+                    tank.lives++;
+                    blocks[i].state = 0;
+                }
+                if  (block.state == 9) {
+                    // console.log('bonus 9');
+                    for (let j = 0; j < blocks.length; j++) {
+                        if (blocks[j].state == -1) {
+                            blocks[j].state = 6;
+                        }
+                    }
+                    blocks[i].state = 0;
+                }
+                return false;
             }
         }
+        if (tank.state == 3) {
+            if (tank.y + tank.speed + cubeSize > block.y && tank.y + tank.speed + cubeSize < block.y + cubeSize && ((tank.x >= block.x && tank.x <= block.x + cubeSize) || (tank.x + cubeSize >= block.x && tank.x + cubeSize <= block.x + cubeSize))) {
+                // console.log(block);
+
+                tank.y = block.y - 50;
+
+                if (block.state == 7) {
+                    tank.type++;
+                    if (tank.type == 4) {
+                        tank.lives = Math.max(2, tank.lives);
+                    }
+                    blocks[i].state = 0;
+                }
+                if (block.state == 8) {
+                    tank.lives++;
+                    blocks[i].state = 0;
+                }
+                if  (block.state == 9) {
+                    // console.log('bonus 9');
+                    for (let j = 0; j < blocks.length; j++) {
+                        if (blocks[j].state == -1) {
+                            blocks[j].state = 6;
+                        }
+                    }
+                    blocks[i].state = 0;
+                }
+                return false;
+            }
+        }
+        if (tank.state == 2) {
+            if (tank.x + cubeSize + tank.speed > block.x && tank.x + cubeSize + tank.speed < block.x + cubeSize && ((tank.y >= block.y && tank.y <= block.y + cubeSize) || (tank.y + cubeSize >= block.y && tank.y + cubeSize <= block.y + cubeSize))) {
+                // console.log(block);
+
+                tank.x = block.x - 50;
+
+                if (block.state == 7) {
+                    tank.type++;
+                    if (tank.type == 4) {
+                        tank.lives = Math.max(2, tank.lives);
+                    }
+                    blocks[i].state = 0;
+                }
+                if (block.state == 8) {
+                    tank.lives++;
+                    blocks[i].state = 0;
+                }
+                if  (block.state == 9) {
+                    // console.log('bonus 9');
+                    for (let j = 0; j < blocks.length; j++) {
+                        if (blocks[j].state == -1) {
+                            blocks[j].state = 6;
+                        }
+                    }
+                    blocks[i].state = 0;
+                }
+                return false;
+            }
+        }
+        if (tank.state == 4) {
+            if (tank.x - tank.speed < block.x + cubeSize && tank.x - tank.speed > block.x && ((tank.y >= block.y && tank.y <= block.y + cubeSize) || (tank.y + cubeSize >= block.y && tank.y + cubeSize <= block.y + cubeSize))) {
+                // console.log(block);
+
+                tank.x = block.x + 50;
+
+                if (block.state == 7) {
+                    tank.type++;
+                    if (tank.type == 4) {
+                        tank.lives = Math.max(2, tank.lives);
+                    }
+                    blocks[i].state = 0;
+                }
+                if (block.state == 8) {
+                    tank.lives++;
+                    blocks[i].state = 0;
+                }
+                if  (block.state == 9) {
+                    // console.log('bonus 9');
+                    for (let j = 0; j < blocks.length; j++) {
+                        if (blocks[j].state == -1) {
+                            blocks[j].state = 6;
+                        }
+                    }
+                    blocks[i].state = 0;
+                }
+                return false;
+            }
+        } 
     }
+    for (let i = 0; i < enemyTanks.length + 1; i++) {
+        let block;
+        if (i == enemyTanks.length) {
+            block = playerTank;
+        } else {
+            block = enemyTanks[i];
+        }
+        
+        if (block.state == 0) {
+            continue;
+        }
+        // 
+        if (tank.state == 1) {            
+            if (tank.y - tank.speed < block.y + cubeSize && tank.y - tank.speed > block.y && ((tank.x >= block.x && tank.x <= block.x + cubeSize) || (tank.x + cubeSize >= block.x && tank.x + cubeSize <= block.x + cubeSize))) {
+                // console.log(block);
+                tank.y = block.y + 50;
+                return false;
+            }
+        }
+        if (tank.state == 3) {
+            if (tank.y + tank.speed + cubeSize > block.y && tank.y + tank.speed + cubeSize < block.y + cubeSize && ((tank.x >= block.x && tank.x <= block.x + cubeSize) || (tank.x + cubeSize >= block.x && tank.x + cubeSize <= block.x + cubeSize))) {
+                // console.log(block);
+                tank.y = block.y - 50;
+                return false;
+            }
+        }
+        if (tank.state == 2) {
+            if (tank.x + cubeSize + tank.speed > block.x && tank.x + cubeSize + tank.speed < block.x + cubeSize && ((tank.y >= block.y && tank.y <= block.y + cubeSize) || (tank.y + cubeSize >= block.y && tank.y + cubeSize <= block.y + cubeSize))) {
+                // console.log(block);
+                tank.x = block.x - 50;
+                return false;
+            }
+        }
+        if (tank.state == 4) {
+            if (tank.x - tank.speed < block.x + cubeSize && tank.x - tank.speed > block.x && ((tank.y >= block.y && tank.y <= block.y + cubeSize) || (tank.y + cubeSize >= block.y && tank.y + cubeSize <= block.y + cubeSize))) {
+                // console.log(block);
+                tank.x = block.x + 50;
+                return false;
+            }
+        }
+
+    }
+    return true;
 }
-*/
 
 function canMoveEnemyBullet(pos) {
     let bullet = enemyTanksBullet[pos];
@@ -220,7 +359,7 @@ function shootEnemyTank(i) {
     let tank = enemyTanks[i];
     let bullet = enemyTanksBullet[i];
     if (bullet.appear == true) {
-        // return;
+        return;
     }
     bullet.appear = true;
     bullet.speed = tank.shootSpeed;
@@ -351,7 +490,7 @@ function canMoveBullet() {
                 enemyTanks[i].speed = 0;
                 enemyTanks[i].x = 1100;
             }
-            console.log(enemyTanks[i]);
+            // console.log(enemyTanks[i]);
         }
     }
 }
@@ -507,8 +646,43 @@ function canMove() {
                 }
                 return false;
             }
+        } 
+    }
+    for (let i = 0; i < enemyTanks.length; i++) {
+        let block = enemyTanks[i];
+        if (block.state == 0) {
+            continue;
         }
-        
+        // 
+        if (playerTank.state == 1) {            
+            if (playerTank.y - playerTank.speed < block.y + cubeSize && playerTank.y - playerTank.speed > block.y && ((playerTank.x >= block.x && playerTank.x <= block.x + cubeSize) || (playerTank.x + cubeSize >= block.x && playerTank.x + cubeSize <= block.x + cubeSize))) {
+                console.log(block);
+                playerTank.y = block.y + 50;
+                return false;
+            }
+        }
+        if (playerTank.state == 3) {
+            if (playerTank.y + playerTank.speed + cubeSize > block.y && playerTank.y + playerTank.speed + cubeSize < block.y + cubeSize && ((playerTank.x >= block.x && playerTank.x <= block.x + cubeSize) || (playerTank.x + cubeSize >= block.x && playerTank.x + cubeSize <= block.x + cubeSize))) {
+                console.log(block);
+                playerTank.y = block.y - 50;
+                return false;
+            }
+        }
+        if (playerTank.state == 2) {
+            if (playerTank.x + cubeSize + playerTank.speed > block.x && playerTank.x + cubeSize + playerTank.speed < block.x + cubeSize && ((playerTank.y >= block.y && playerTank.y <= block.y + cubeSize) || (playerTank.y + cubeSize >= block.y && playerTank.y + cubeSize <= block.y + cubeSize))) {
+                console.log(block);
+                playerTank.x = block.x - 50;
+                return false;
+            }
+        }
+        if (playerTank.state == 4) {
+            if (playerTank.x - playerTank.speed < block.x + cubeSize && playerTank.x - playerTank.speed > block.x && ((playerTank.y >= block.y && playerTank.y <= block.y + cubeSize) || (playerTank.y + cubeSize >= block.y && playerTank.y + cubeSize <= block.y + cubeSize))) {
+                console.log(block);
+                playerTank.x = block.x + 50;
+                return false;
+            }
+        }
+
     }
     return true;
 }
@@ -620,8 +794,12 @@ function drawBlocks() {
             ctx.drawImage(imgUnbr, block.x, block.y, 50, 50);
         } else if (block.state == 5) {
             if (isDefeatedPlayerStab == false) {
+                base.x = block.x;
+                base.y = block.y;
                 ctx.drawImage(imgBase, block.x, block.y, 50, 50);
             } else {
+                base.x = 0;
+                base.y = 0;
                 ctx.drawImage(imgDefeatedBase, block.x, block.y, 50, 50);
             }
         } else if (block.state == 6) {
@@ -689,6 +867,69 @@ function draw() {
             enemyTanksBullet[i].y+= enemyTanksBullet[i].speed;
         } else if (enemyTanksBullet[i].state == 4) {
             enemyTanksBullet[i].x-= enemyTanksBullet[i].speed;
+        }
+    }
+    // enemies's movements
+    for (let i = 0; i < enemyTanks.length; i++) {
+        if (Math.abs(playerTank.y - enemyTanks[i].y) < 25) {
+            if (enemyTanks[i].x > playerTank.x) {
+                enemyTanks[i].state = 4;
+            } else {
+                enemyTanks[i].state = 2;
+            }
+            shootEnemyTank(i);
+        } else if (Math.abs(playerTank.x - enemyTanks[i].x) < 25) {
+            if (enemyTanks[i].y > playerTank.y) {
+                enemyTanks[i].state = 1;
+            } else {
+                enemyTanks[i].state = 3;
+            }
+            shootEnemyTank(i);
+        } else if (Math.abs(base.y - enemyTanks[i].y) < 25) {
+            if (enemyTanks[i].x > base.x) {
+                enemyTanks[i].state = 4;
+            } else {
+                enemyTanks[i].state = 2;
+            }
+            shootEnemyTank(i);
+        } else if (Math.abs(base.x - enemyTanks[i].x) < 25) {
+            if (enemyTanks[i].y > base.y) {
+                enemyTanks[i].state = 1;
+            } else {
+                enemyTanks[i].state = 3;
+            }
+            shootEnemyTank(i);
+        } else {
+            let min = 1; 
+            let max = 30;          
+            let chance = Math.floor(Math.random() * (max - min)) + min;
+            if (chance == 1) {
+                enemyTanks[i].state = 1;
+            } else if (chance == 2) {
+                enemyTanks[i].state = 2;
+            } else if (chance == 3) {
+                enemyTanks[i].state = 3;
+            } else if (chance == 4) {
+                enemyTanks[i].state = 4;
+            }
+        }        
+
+        if (enemyTanks[i].state == 1) {
+            if (canEnemyMove(enemyTanks[i]) == true) {
+                enemyTanks[i].y-= enemyTanks[i].speed;
+            }
+        } else if (enemyTanks[i].state == 2) {
+            if (canEnemyMove(enemyTanks[i]) == true) {
+                enemyTanks[i].x+= enemyTanks[i].speed;
+            }
+        } else if (enemyTanks[i].state == 3) {
+            if (canEnemyMove(enemyTanks[i]) == true) {
+                enemyTanks[i].y+= enemyTanks[i].speed;
+            }
+        } else if (enemyTanks[i].state == 4) {
+            if (canEnemyMove(enemyTanks[i]) == true) {
+                enemyTanks[i].x-= enemyTanks[i].speed;
+            }
         }
     }
 
