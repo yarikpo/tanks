@@ -29,99 +29,99 @@ const field = [
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
 ];
 var imgTree = new Image();
-imgTree.src = 'D:/Projects/canvas/tank/images/forest.png';
+imgTree.src = '/images/forest.png';
 var imgBrick = new Image();
-imgBrick.src = 'D:/Projects/canvas/tank/images/bricks-full.png';
+imgBrick.src = '/images/bricks-full.png';
 var imgWater = new Image();
-imgWater.src = 'D:/Projects/canvas/tank/images/water.png';
+imgWater.src = '/images/water.png';
 var imgUnbr = new Image();
-imgUnbr.src = 'D:/Projects/canvas/tank/images/wall-full.png';
+imgUnbr.src = '/images/wall-full.png';
 
 var imgEnemyTank1Up = new Image(); // common
-imgEnemyTank1Up.src = 'D:/Projects/canvas/tank/images/enemy-common(1).png';
+imgEnemyTank1Up.src = '/images/enemy-common(1).png';
 var imgEnemyTank1Right = new Image(); // common
-imgEnemyTank1Right.src = 'D:/Projects/canvas/tank/images/enemy-common(2).png';
+imgEnemyTank1Right.src = '/images/enemy-common(2).png';
 var imgEnemyTank1Down = new Image(); // common
-imgEnemyTank1Down.src = 'D:/Projects/canvas/tank/images/enemy-common(3).png';
+imgEnemyTank1Down.src = '/images/enemy-common(3).png';
 var imgEnemyTank1Left = new Image(); // common
-imgEnemyTank1Left.src = 'D:/Projects/canvas/tank/images/enemy-common(4).png';
+imgEnemyTank1Left.src = '/images/enemy-common(4).png';
 
 var imgEnemyTank2Up = new Image(); // fast
-imgEnemyTank2Up.src = 'D:/Projects/canvas/tank/images/enemy-fast(1).png';
+imgEnemyTank2Up.src = '/images/enemy-fast(1).png';
 var imgEnemyTank2Right = new Image(); // fast
-imgEnemyTank2Right.src = 'D:/Projects/canvas/tank/images/enemy-fast(2).png';
+imgEnemyTank2Right.src = '/images/enemy-fast(2).png';
 var imgEnemyTank2Down = new Image(); // fast
-imgEnemyTank2Down.src = 'D:/Projects/canvas/tank/images/enemy-fast(3).png';
+imgEnemyTank2Down.src = '/images/enemy-fast(3).png';
 var imgEnemyTank2Left = new Image(); // fast
-imgEnemyTank2Left.src = 'D:/Projects/canvas/tank/images/enemy-fast(4).png';
+imgEnemyTank2Left.src = '/images/enemy-fast(4).png';
 
 var imgEnemyTank3Up = new Image(); // middle
-imgEnemyTank3Up.src = 'D:/Projects/canvas/tank/images/enemy-middle(1).png';
+imgEnemyTank3Up.src = '/images/enemy-middle(1).png';
 var imgEnemyTank3Right = new Image(); // middle
-imgEnemyTank3Right.src = 'D:/Projects/canvas/tank/images/enemy-middle(2).png';
+imgEnemyTank3Right.src = '/images/enemy-middle(2).png';
 var imgEnemyTank3Down = new Image(); // middle
-imgEnemyTank3Down.src = 'D:/Projects/canvas/tank/images/enemy-middle(3).png';
+imgEnemyTank3Down.src = '/images/enemy-middle(3).png';
 var imgEnemyTank3Left = new Image(); // middle
-imgEnemyTank3Left.src = 'D:/Projects/canvas/tank/images/enemy-middle(4).png';
+imgEnemyTank3Left.src = '/images/enemy-middle(4).png';
 
 var imgEnemyTank4Up = new Image(); // heavy
-imgEnemyTank4Up.src = 'D:/Projects/canvas/tank/images/enemy-heavy(1).png';
+imgEnemyTank4Up.src = '/images/enemy-heavy(1).png';
 var imgEnemyTank4Right = new Image(); // heavy
-imgEnemyTank4Right.src = 'D:/Projects/canvas/tank/images/enemy-heavy(2).png';
+imgEnemyTank4Right.src = '/images/enemy-heavy(2).png';
 var imgEnemyTank4Down = new Image(); // heavy
-imgEnemyTank4Down.src = 'D:/Projects/canvas/tank/images/enemy-heavy(3).png';
+imgEnemyTank4Down.src = '/images/enemy-heavy(3).png';
 var imgEnemyTank4Left = new Image(); // heavy
-imgEnemyTank4Left.src = 'D:/Projects/canvas/tank/images/enemy-heavy(4).png';
+imgEnemyTank4Left.src = '/images/enemy-heavy(4).png';
 
 var playerBullet = { x: 300, y: 300, state: 0, speed: 0, appear: false, bulletRadius: 3 };
 
 var imgPlayerTankLevel1Up = new Image();
-imgPlayerTankLevel1Up.src = 'D:/Projects/canvas/tank/images/player-level1(1).png';
+imgPlayerTankLevel1Up.src = '/images/player-level1(1).png';
 var imgPlayerTankLevel1Right = new Image();
-imgPlayerTankLevel1Right.src = 'D:/Projects/canvas/tank/images/player-level1(2).png';
+imgPlayerTankLevel1Right.src = '/images/player-level1(2).png';
 var imgPlayerTankLevel1Down = new Image();
-imgPlayerTankLevel1Down.src = 'D:/Projects/canvas/tank/images/player-level1(3).png';
+imgPlayerTankLevel1Down.src = '/images/player-level1(3).png';
 var imgPlayerTankLevel1Left = new Image();
-imgPlayerTankLevel1Left.src = 'D:/Projects/canvas/tank/images/player-level1(4).png';
+imgPlayerTankLevel1Left.src = '/images/player-level1(4).png';
 
 var imgPlayerTankLevel2Up = new Image();
-imgPlayerTankLevel2Up.src = 'D:/Projects/canvas/tank/images/player-level2(1).png';
+imgPlayerTankLevel2Up.src = '/images/player-level2(1).png';
 var imgPlayerTankLevel2Right = new Image();
-imgPlayerTankLevel2Right.src = 'D:/Projects/canvas/tank/images/player-level2(2).png';
+imgPlayerTankLevel2Right.src = '/images/player-level2(2).png';
 var imgPlayerTankLevel2Down = new Image();
-imgPlayerTankLevel2Down.src = 'D:/Projects/canvas/tank/images/player-level2(3).png';
+imgPlayerTankLevel2Down.src = '/images/player-level2(3).png';
 var imgPlayerTankLevel2Left = new Image();
-imgPlayerTankLevel2Left.src = 'D:/Projects/canvas/tank/images/player-level2(4).png';
+imgPlayerTankLevel2Left.src = '/images/player-level2(4).png';
 
 var imgPlayerTankLevel3Up = new Image();
-imgPlayerTankLevel3Up.src = 'D:/Projects/canvas/tank/images/player-level3(1).png';
+imgPlayerTankLevel3Up.src = '/images/player-level3(1).png';
 var imgPlayerTankLevel3Right = new Image();
-imgPlayerTankLevel3Right.src = 'D:/Projects/canvas/tank/images/player-level3(2).png';
+imgPlayerTankLevel3Right.src = '/images/player-level3(2).png';
 var imgPlayerTankLevel3Down = new Image();
-imgPlayerTankLevel3Down.src = 'D:/Projects/canvas/tank/images/player-level3(3).png';
+imgPlayerTankLevel3Down.src = '/images/player-level3(3).png';
 var imgPlayerTankLevel3Left = new Image();
-imgPlayerTankLevel3Left.src = 'D:/Projects/canvas/tank/images/player-level3(4).png';
+imgPlayerTankLevel3Left.src = '/images/player-level3(4).png';
 
 var imgPlayerTankLevel4Up = new Image();
-imgPlayerTankLevel4Up.src = 'D:/Projects/canvas/tank/images/player-level4(1).png';
+imgPlayerTankLevel4Up.src = '/images/player-level4(1).png';
 var imgPlayerTankLevel4Right = new Image();
-imgPlayerTankLevel4Right.src = 'D:/Projects/canvas/tank/images/player-level4(2).png';
+imgPlayerTankLevel4Right.src = '/images/player-level4(2).png';
 var imgPlayerTankLevel4Down = new Image();
-imgPlayerTankLevel4Down.src = 'D:/Projects/canvas/tank/images/player-level4(3).png';
+imgPlayerTankLevel4Down.src = '/images/player-level4(3).png';
 var imgPlayerTankLevel4Left = new Image();
-imgPlayerTankLevel4Left.src = 'D:/Projects/canvas/tank/images/player-level4(4).png';
+imgPlayerTankLevel4Left.src = '/images/player-level4(4).png';
 
 var imgBase = new Image();
-imgBase.src = 'D:/Projects/canvas/tank/images/base.png';
+imgBase.src = '/images/base.png';
 var imgDefeatedBase = new Image();
-imgDefeatedBase.src = 'D:/Projects/canvas/tank/images/base_defeated.png';
+imgDefeatedBase.src = '/images/base_defeated.png';
 
 var imgStar = new Image();
-imgStar.src = 'D:/Projects/canvas/tank/images/bonus_star.png';
+imgStar.src = '/images/bonus_star.png';
 var imgBonusTank = new Image();
-imgBonusTank.src = 'D:/Projects/canvas/tank/images/bonus_tank.png';
+imgBonusTank.src = '/images/bonus_tank.png';
 var imgShovel = new Image();
-imgShovel.src = 'D:/Projects/canvas/tank/images/bonus_shovel.png';
+imgShovel.src = '/images/bonus_shovel.png';
 
 var isDefeatedPlayerStab = false;
 
